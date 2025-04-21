@@ -58,26 +58,6 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            @php
-                                $offset = \Carbon\Carbon::now()->getOffset() / 3600;
-                                $zone = match ($offset) {
-                                    7 => 'WIB',
-                                    8 => 'WITA',
-                                    9 => 'WIT',
-                                    default => 'N/A',
-                                };
-                            @endphp
-
-                            <div class="d-flex flex-wrap justify-content-center justify-content-md-end align-items-center text-center mb-4"
-                                style="gap: .5rem">
-                                <span>Terakhir diperbarui:</span>
-                                <span data-toggle="tooltip"
-                                    title="{{ $site->updated_at ? \Carbon\Carbon::parse($site->updated_at)->locale('id')->isoFormat('D MMMM YYYY - HH:mm') : 'N/A' }} {{ $zone }}">
-                                    {{ $site->updated_at ? \Carbon\Carbon::parse($site->updated_at)->locale('id')->diffForHumans() : 'N/A' }}
-                                </span>
-                            </div>
-
-
                             <form action="{{ url('/site-identity') }}" method="POST">
                                 @csrf
                                 @method('PUT')
@@ -160,6 +140,16 @@
                                     <div class="col-12">
                                         <div class="d-flex flex-wrap justify-content-center justify-content-md-between align-items-center"
                                             style="gap: 1.5rem">
+                                            @php
+                                                $offset = \Carbon\Carbon::now()->getOffset() / 3600;
+                                                $zone = match ($offset) {
+                                                    7 => 'WIB',
+                                                    8 => 'WITA',
+                                                    9 => 'WIT',
+                                                    default => 'N/A',
+                                                };
+                                            @endphp
+
                                             <div class="d-flex flex-wrap justify-content-center justify-content-md-end align-items-center text-center"
                                                 style="gap: .5rem">
                                                 <span>Terakhir diperbarui:</span>
