@@ -263,7 +263,7 @@
                                     </button>
 
                                     <div class="d-flex justify-content-end align-items-center" style="gap: .5rem">
-                                        <a href="/immunization-data/{{ $immunization->id }}/show"
+                                        <a href="{{ url("/immunization-data/{$immunization->id}/show") }}"
                                             class="btn btn-secondary">Kembali</a>
 
                                         @if ($availableAction === true)
