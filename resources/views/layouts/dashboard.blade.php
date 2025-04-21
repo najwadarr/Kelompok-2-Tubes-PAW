@@ -166,7 +166,7 @@
                                     </div>
                                     <div class="dropdown-item-desc">
                                         ${item.name}
-                                        <div class="time">${item.time}</div>
+                                        <div class="time">${item.time} <span class="bullet"></span> Belum Diverifikasi</div>
                                     </div>
                                 </a>`;
                             });
