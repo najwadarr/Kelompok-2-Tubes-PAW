@@ -25,7 +25,7 @@ class AuthController extends Controller
 
         if (RateLimiter::tooManyAttempts($key, 10)) {
             $seconds = RateLimiter::availableIn($key);
-            return back()->with('error', "Terlalu banyak percobaan login. Coba lagi dalam {$seconds} detik.");
+            return back()->with('error', "Terlalu banyak percobaan masuk. Coba lagi dalam {$seconds} detik.");
         }
 
         RateLimiter::hit($key, 300); // Membuat hit bertahan selama 5 menit
@@ -97,7 +97,16 @@ class AuthController extends Controller
             'fullname' => 'required',
             'username' => 'required|unique:users,username',
             'password' => 'required|min:8|confirmed',
-            'phone_number' => 'required|unique:users,phone_number',
+            'phone_number' => [
+                'required',
+                'unique:users,phone_number',
+                // Validasi tambahan
+                function ($attribute, $value, $fail) {
+                    if (!(substr($value, 0, 4) === '+628' || substr($value, 0, 2) === '08')) {
+                        $fail('Nomor HP/WA tidak valid.');
+                    }
+                }
+            ],
         ];
 
         $messages = [
@@ -114,14 +123,10 @@ class AuthController extends Controller
             'phone_number.unique' => 'Nomor HP/WA sudah terdaftar.',
         ];
 
-        // Validasi tambahan nomor HP/WA
-        if (!(substr($request->phone_number, 0, 4) === '+628' || substr($request->phone_number, 0, 2) === '08')) {
-            return back()->withErrors(['phone_number' => "Nomor HP/WA tidak valid."])->withInput();
-        }
-
-        if (substr($request->phone_number, 0, 2) === '08') {
+        // Konversi nomor '08' ke '+628' (sebelum validasi)
+        if (substr($request->input('phone_number'), 0, 2) === '08') {
             $request->merge([
-                'phone_number' => '+62' . substr($request->phone_number, 1),
+                'phone_number' => '+62' . substr($request->input('phone_number'), 1),
             ]);
         }
 
