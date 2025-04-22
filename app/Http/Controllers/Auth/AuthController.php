@@ -161,17 +161,17 @@ class AuthController extends Controller
                 'verified_at' => null,
             ]);
 
-            // Clear rate limiter setelah berhasil
+            // Hapus rate limiter setelah berhasil
             RateLimiter::clear($key);
 
-            return redirect()->route('register')->with('success', 'Registrasi berhasil. Silahkan tunggu hingga akun Anda diverifikasi.');
+            return redirect()->route('register')->with('success', 'Registrasi berhasil. Silakan tunggu hingga akun Anda diverifikasi.');
         } catch (\Exception $e) {
             Log::error('Error: ' . $e->getMessage()); // Check 'storage/logs/laravel.log'
 
             if (isset($parent)) $parent->delete();
             if (isset($user)) $user->delete();
 
-            return redirect()->route('register')->with('error', 'Registrasi gagal. Silahkan coba kembali.');
+            return redirect()->route('register')->with('error', 'Registrasi gagal. Silakan coba kembali.');
         }
     }
 
