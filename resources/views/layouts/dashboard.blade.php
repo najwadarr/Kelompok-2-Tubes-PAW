@@ -137,42 +137,52 @@
 
     @if (Auth::user() && Auth::user()->role === 'admin')
         <script>
+            let pollingInterval;
+
+            function updateNotifUI(response) {
+                let total = response.count;
+                let displayCount = total > 3 ? '3+' : total;
+
+                $('#notif-count').text(displayCount);
+
+                let html = '';
+                if (total === 0) {
+                    $('.notification-toggle').removeClass('beep');
+                    html += `
+                    <div class="dropdown-item text-center text-muted">
+                        Tidak ada notifikasi.
+                    </div>`;
+                } else {
+                    $('.notification-toggle').addClass('beep');
+                    response.data.forEach(function(item) {
+                        html += `
+                        <a href="{{ url('/parent-data?status=not-active') }}" class="dropdown-item">
+                            <div class="dropdown-item-icon bg-warning text-white">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="dropdown-item-desc">
+                                ${item.name}
+                                <div class="time">${item.time} <span class="bullet"></span> Belum Diverifikasi</div>
+                            </div>
+                        </a>`;
+                    });
+                }
+
+                $('#notif-list').html(html);
+            }
+
             function getNotification() {
                 $.ajax({
                     url: '{{ route('get.unverified.parents') }}',
                     method: 'GET',
                     success: function(response) {
-                        // Hitung jumlah
-                        let total = response.count;
-                        let displayCount = total > 3 ? '3+' : total;
-                        $('#notif-count').text(displayCount);
+                        const lastCount = localStorage.getItem('lastNotifCount');
 
-                        let html = '';
-
-                        if (total === 0) {
-                            $('.notification-toggle').removeClass('beep');
-                            html += `
-                            <div class="dropdown-item text-center text-muted">
-                                Tidak ada notifikasi.
-                            </div>`;
-                        } else {
-                            $('.notification-toggle').addClass('beep');
-
-                            response.data.forEach(function(item) {
-                                html += `
-                                <a href="{{ url('/parent-data?status=not-active') }}" class="dropdown-item">
-                                    <div class="dropdown-item-icon bg-warning text-white">
-                                        <i class="fas fa-exclamation-triangle"></i>
-                                    </div>
-                                    <div class="dropdown-item-desc">
-                                        ${item.name}
-                                        <div class="time">${item.time} <span class="bullet"></span> Belum Diverifikasi</div>
-                                    </div>
-                                </a>`;
-                            });
+                        // Update only if the count has changed
+                        if (lastCount != response.count) {
+                            localStorage.setItem('lastNotifCount', response.count);
+                            updateNotifUI(response);
                         }
-
-                        $('#notif-list').html(html);
                     },
                     error: function() {
                         console.error('Gagal mengambil notifikasi.');
@@ -180,9 +190,25 @@
                 });
             }
 
+            function startPolling() {
+                pollingInterval = setInterval(() => {
+                    if (!document.hidden) {
+                        getNotification();
+                    }
+                }, 60000); // 60 detik
+            }
+
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    clearInterval(pollingInterval); // Hentikan polling saat tab tidak aktif
+                } else {
+                    startPolling(); // Mulai ulang polling saat tab aktif
+                }
+            });
+
             $(document).ready(function() {
-                getNotification();
-                setInterval(getNotification, 60000); // refresh tiap 60 detik
+                getNotification(); // Panggil pertama kali saat halaman dimuat
+                startPolling(); // Mulai polling jika tab aktif
             });
         </script>
     @endif
