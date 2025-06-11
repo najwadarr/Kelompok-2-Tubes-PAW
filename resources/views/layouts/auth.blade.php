@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>E-POSYANDU | @yield('title')</title>
+    <title>Peminjaman | @yield('title')</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/png">
@@ -118,7 +118,7 @@
                         <div class="col-12 mb-4">
                             <div class="d-flex justify-content-center align-items-center mt-3 mb-2" style="gap: .5rem">
                                 <img src="{{ asset('img/logo.png') }}" alt="Logo" class="rounded" height="24">
-                                <h5 class="font-weight-bold mb-0" style="color: #6777ef;">E-POSYANDU</h5>
+                                <h5 class="font-weight-bold mb-0" style="color: #6777ef;">Peminjaman</h5>
                             </div>
 
                             <h2 class="text-center text-dark">
@@ -147,7 +147,7 @@
                         <div class="col-12">
                             <div class="d-flex flex-wrap justify-content-center text-center text-small mt-4"
                                 style="gap: .25rem">
-                                <span>&copy; {{ date('Y') }} E-POSYANDU</span>
+                                <span>&copy; {{ date('Y') }} Peminjaman</span>
                                 <span class="bullet"></span>
                                 <span>{{ $site->village_name }}</span>
                             </div>
@@ -155,13 +155,13 @@
                     </div>
                 </div>
                 <div class="min-vh-100 background-walk-y overlay-gradient-bottom d-none d-lg-inline position-relative"
-                    data-background="{{ asset('img/auth-image.jpeg') }}">
+                    data-background="{{ asset('img/pwt.png') }}">
                     <div class="absolute-bottom-left" style="left: 1rem; bottom: 1rem">
-                        <div class="text-light">
+                        {{-- <div class="text-light">
                             Sumber: <a class="text-light bb"
                                 href="https://www.vecteezy.com/photo/43210003-young-mother-holding-her-baby-in-a-warm-cozy-setting"
                                 target="_blank">Vecteezy</a>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>

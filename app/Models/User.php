@@ -6,8 +6,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     // Default
     // /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -50,6 +51,21 @@ class User extends Authenticatable
     // Custom
     use HasFactory, Notifiable;
 
+    public function getJWTIdentifier()
+    {
+        return $this->getKey(); // biasanya primary key user (id)
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to JWT.
+     */
+    public function getJWTCustomClaims()
+    {
+        return [
+            'role' => $this->role,
+        ];
+    }
+
     protected $guarded = [
         'id'
     ];
@@ -59,33 +75,33 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    public function officers()
-    {
-        return $this->belongsTo(Officer::class, 'officer_id');
-    }
+    // public function officers()
+    // {
+    //     return $this->belongsTo(Officer::class, 'officer_id');
+    // }
 
-    public function familyParents()
-    {
-        return $this->belongsTo(FamilyParent::class, 'parent_id');
-    }
+    // public function familyParents()
+    // {
+    //     return $this->belongsTo(FamilyParent::class, 'parent_id');
+    // }
 
-    public static function adminCount()
-    {
-        return self::where('role', 'admin')->count();  // Filter berdasarkan 'role' = 'admin'
-    }
+    // public static function adminCount()
+    // {
+    //     return self::where('role', 'admin')->count();  // Filter berdasarkan 'role' = 'admin'
+    // }
 
-    public static function midwifeCount()
-    {
-        return self::where('role', 'midwife')->count();  // Filter berdasarkan 'role' = 'midwife'
-    }
+    // public static function midwifeCount()
+    // {
+    //     return self::where('role', 'midwife')->count();  // Filter berdasarkan 'role' = 'midwife'
+    // }
 
-    public static function officerCount()
-    {
-        return self::where('role', 'officer')->count();  // Filter berdasarkan 'role' = 'officer'
-    }
+    // public static function officerCount()
+    // {
+    //     return self::where('role', 'officer')->count();  // Filter berdasarkan 'role' = 'officer'
+    // }
 
-    public static function familyParentCount()
-    {
-        return self::where('role', 'family_parent')->count();  // Filter berdasarkan 'role' = 'family_parent'
-    }
+    // public static function familyParentCount()
+    // {
+    //     return self::where('role', 'peminjam')->count();  // Filter berdasarkan 'role' = 'peminjam'
+    // }
 }

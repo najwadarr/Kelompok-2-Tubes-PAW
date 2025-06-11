@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Auth\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\FamilyParent;
+// use App\Models\FamilyParent;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,66 +13,20 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
-    public function index()
-    {
-        return view('auth.login');
-    }
-
     public function authenticateLogin(Request $request)
     {
-        // Cegah spam login (maks 10 kali per 5 menit per IP)
-        $ip = $request->ip();
-        $key = 'login_attempts:' . $ip;
-
-        if (RateLimiter::tooManyAttempts($key, 10)) {
-            $seconds = RateLimiter::availableIn($key);
-            return back()->with('error', "Terlalu banyak percobaan masuk. Coba lagi dalam {$seconds} detik.");
-        }
-
-        RateLimiter::hit($key, 300); // Membuat hit bertahan selama 5 menit
-
-        // Validasi input
-        $request->validate([
-            'username' => 'required',
-            'password' => 'required'
-        ], [
-            'username.required' => 'Nama pengguna wajib diisi.',
-            'password.required' => 'Kata sandi wajib diisi.'
-        ]);
-
         $credentials = $request->only('username', 'password');
 
-        try {
-            if (Auth::attempt($credentials)) {
-                $user = Auth::user();
-
-                if (is_null($user->verified_at)) {
-                    $verifiedAtMessage = (!is_null($user->parent_id))
-                        ? 'Akun Anda belum diverifikasi.'
-                        : 'Akun Anda tidak aktif.';
-
-                    Auth::logout();
-                    return back()->with('error', $verifiedAtMessage);
-                }
-
-                $request->session()->regenerate();
-
-                $fullname = $user->officer_id !== null
-                    ? optional($user->officers)->fullname
-                    : optional($user->familyParents)->mother_fullname;
-
-                // Hapus rate limiter jika berhasil login
-                RateLimiter::clear($key);
-
-                return redirect()->intended(url('/dashboard'))->with('success', "Selamat datang, {$fullname}.");
-            }
-
-            return back()->with('error', 'Periksa kembali nama pengguna dan kata sandi Anda.');
-        } catch (\Exception $e) {
-            Log::error('Error: ' . $e->getMessage()); // Check 'storage/logs/laravel.log'
-
-            return redirect()->route('login')->with('error', 'Terjadi kesalahan saat masuk. Silahkan coba kembali.');
+        // Gunakan guard api yang driver jwt
+        if (!$token = auth('api')->attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
+    
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => config('jwt.ttl') * 60,
+        ]);
     }
 
     public function register()

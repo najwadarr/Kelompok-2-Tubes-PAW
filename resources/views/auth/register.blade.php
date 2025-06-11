@@ -9,20 +9,9 @@
     <form method="POST" action="{{ route('auth-register') }}">
         @csrf
 
-        <div class="form-group">
-            <label for="nik" class="form-label">Nomor Induk Keluarga (NIK) Ibu <span class="text-danger">*</span></label>
-            <input id="nik" type="number" class="form-control @error('nik') is-invalid @enderror" name="nik"
-                value="{{ old('nik') }}" placeholder="5271xxxxxxxxxxxx" autofocus>
-            @error('nik')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
-            <div class="invalid-feedback" id="nik-error"></div>
-        </div>
 
         <div class="form-group">
-            <label for="fullname" class="form-label">Nama Lengkap Ibu <span class="text-danger">*</span></label>
+            <label for="fullname" class="form-label">Nama Lengkap<span class="text-danger">*</span></label>
             <input id="fullname" type="text" class="form-control @error('fullname') is-invalid @enderror"
                 name="fullname" value="{{ old('fullname') }}" placeholder="Jane Doe">
             @error('fullname')

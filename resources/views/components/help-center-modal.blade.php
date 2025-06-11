@@ -36,7 +36,7 @@
                     </div>
                 </div>
 
-                <a href="https://wa.me/{{ $site->phone_number }}?text=Hai Admin E-Posyandu {{ $site->village_name }}."
+                <a href="https://wa.me/{{ $site->phone_number }}?text=Hai Admin Peminjaman {{ $site->village_name }}."
                     target="_blank" class="btn btn-success w-100"><i class="fab fa-whatsapp mr-1"></i> Hubungi Admin</a>
             </div>
         </div>

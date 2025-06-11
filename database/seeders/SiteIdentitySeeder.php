@@ -14,8 +14,8 @@ class SiteIdentitySeeder extends Seeder
     public function run(): void
     {
         SiteIdentity::create([
-            'village_name' => 'Kelurahan Kelapa Gading Barat',
-            'phone_number' => '+6281234567890',
+            'village_name' => 'Purwokerto',
+            'phone_number' => '+62877xxxx',
             'wa_group_url' => 'https://www.whatsapp.com/',
             'officer_wa_group_url' => 'https://www.whatsapp.com/',
         ]);

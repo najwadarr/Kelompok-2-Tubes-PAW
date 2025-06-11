@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>E-POSYANDU | @yield('title')</title>
+    <title>Peminjaman | @yield('title')</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/png">
@@ -45,7 +45,7 @@
                 <header class="d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center" style="gap: .5rem">
                         <img src="{{ asset('img/logo.png') }}" alt="Logo" class="rounded" height="40">
-                        <h5 class="font-weight-bold mb-0" style="color: #6777ef;">E-POSYANDU</h5>
+                        <h5 class="font-weight-bold mb-0" style="color: #6777ef;">Peminjaman</h5>
                     </div>
                     <span class="text-small">
                         Dicetak: {{ \Carbon\Carbon::now()->locale('id')->isoFormat('D MMMM YYYY [|] HH:mm') }}, oleh:

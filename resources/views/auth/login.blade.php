@@ -31,7 +31,6 @@
         </div>
 
         <button type="submit" class="btn btn-primary btn-lg w-100 mb-4">Masuk</button>
-        <div class="text-center">Belum punya akun? <a href="{{ route('register') }}">Registrasi</a></div>
     </form>
 @endsection
 

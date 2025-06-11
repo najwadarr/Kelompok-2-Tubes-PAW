@@ -21,18 +21,9 @@ class DatabaseSeeder extends Seeder
     //     ]);
     // }
 
-    // Custom
     public function run(): void
     {
         $this->call(SiteIdentitySeeder::class);
-        $this->call(OfficerSeeder::class);
-        $this->call(ParentChildrenSeeder::class);
-        $this->call(ElderlySeeder::class);
-        $this->call(VaccineMedicineSeeder::class);
-        $this->call(EventScheduleSeeder::class);
-        $this->call(ImmunizationSeeder::class);
-        $this->call(WeighingSeeder::class);
-        $this->call(PregnancyCheckSeeder::class);
-        $this->call(ElderlyCheckSeeder::class);
+        $this->call(UserSeeder::class);
     }
 }

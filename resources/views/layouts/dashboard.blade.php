@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>E-POSYANDU | @yield('title')</title>
+    <title>Peminjaman | @yield('title')</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/png">
@@ -171,29 +171,11 @@
                 $('#notif-list').html(html);
             }
 
-            function getNotification() {
-                $.ajax({
-                    url: '{{ route('get.unverified.parents') }}',
-                    method: 'GET',
-                    success: function(response) {
-                        const lastCount = localStorage.getItem('lastNotifCount');
-
-                        // Update only if the count has changed
-                        if (lastCount != response.count) {
-                            localStorage.setItem('lastNotifCount', response.count);
-                            updateNotifUI(response);
-                        }
-                    },
-                    error: function() {
-                        console.error('Gagal mengambil notifikasi.');
-                    }
-                });
-            }
 
             function startPolling() {
                 pollingInterval = setInterval(() => {
                     if (!document.hidden) {
-                        getNotification();
+                        // getNotification();
                     }
                 }, 60000); // 60 detik
             }
@@ -207,7 +189,7 @@
             });
 
             $(document).ready(function() {
-                getNotification(); // Panggil pertama kali saat halaman dimuat
+                // getNotification(); // Panggil pertama kali saat halaman dimuat
                 startPolling(); // Mulai polling jika tab aktif
             });
         </script>
